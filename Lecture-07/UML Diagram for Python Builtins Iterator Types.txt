@@ -1,0 +1,74 @@
+@startuml
+' Define the base object class
+class object {
+  +__init__()
+}
+
+' Define the filter class
+class filter {
+  -func: PyObject*
+  -it: PyObject*
+  --
+  +__new__(func: PyObject*, seq: PyObject*)
+  -__dealloc__()
+  -__traverse__(visit: visitproc, arg: void*)
+  +__iter__(): filter
+  +__next__(): PyObject*
+  +__reduce__(): PyObject*
+}
+
+' Define the map class
+class map {
+  -iters: PyObject*
+  -func: PyObject*
+  -strict: int
+  --
+  +__new__(func: PyObject*, *iterables: PyObject*, strict: bool = False)
+  -__dealloc__()
+  -__traverse__(visit: visitproc, arg: void*)
+  +__iter__(): map
+  +__next__(): PyObject*
+  +__reduce__(): PyObject*
+  +__setstate__(state: PyObject*): None
+}
+
+' Define the zip class
+class zip {
+  -tuplesize: Py_ssize_t
+  -ittuple: PyObject*
+  -result: PyObject*
+  -strict: int
+  --
+  +__new__(*iterables: PyObject*, strict: bool = False)
+  -__dealloc__()
+  -__traverse__(visit: visitproc, arg: void*)
+  +__iter__(): zip
+  +__next__(): PyObject*
+  +__reduce__(): PyObject*
+  +__setstate__(state: PyObject*): None
+}
+
+' Define inheritance relationships
+filter --|> object
+map --|> object
+zip --|> object
+
+' Notes
+note right of filter
+  Iterator yielding items from iterable where function(item) is true.
+  If function is None, yields items that are true.
+end note
+
+note right of map
+  Iterator applying function to arguments from iterables.
+  Stops when shortest iterable is exhausted.
+  Strict mode raises ValueError if iterables have different lengths.
+end note
+
+note right of zip
+  Iterator yielding tuples from multiple iterables.
+  Stops when shortest iterable is exhausted.
+  Strict mode raises ValueError if iterables have different lengths.
+end note
+
+@enduml
