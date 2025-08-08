@@ -1,4 +1,4 @@
-# PIAIC Batch-71 Querter-1 Lectures
+# PIAIC Batch-71 Quarter-1 Lectures
 
 This reposiory contains points which i had noted during lectures.
 
